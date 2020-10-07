@@ -1,6 +1,7 @@
 import React from "react"
 import axios from "axios"
 
+
 class MakeModelSelect extends React.Component {
   constructor(props) {
     super(props)
@@ -23,10 +24,12 @@ class MakeModelSelect extends React.Component {
       })
   }
 
+
   // Function to collect models from the API once brand is chosen
   // For each model selection you want first to hide the type selection / Also update 'Brand' in our state, as we will need this information for the next step / Finally turn access model to false in order to be able to access the model input.
 
   makeSelected = (event) => {
+    document.getElementById("model-input").value = "";
     this.setState({ showTypes: false })
     this.setState({ brand: event.target.value })
     this.setState({ accessToModel: false })
@@ -40,9 +43,10 @@ class MakeModelSelect extends React.Component {
       })
   }
 
-  // Function to collect types from the API once model is chosen
+  // Function to collect types from the API once model is chosen // display Types input only if the array it not empty. 
 
   modelSelected = (event) => {
+    document.getElementById("type-input").value = "";
     this.setState({ showTypes: false })
     axios
       .get(
@@ -57,11 +61,10 @@ class MakeModelSelect extends React.Component {
       })
   }
 
-  // Function to reset the type input, depending on the model we want to show or hide this input (because some models does not have a type list)
+  // Function to reset the type input, depending on the model we want to show or hide this input (because some models does not have a type list) => don't need it actually.
 
-  resetTypes = () => {
-    this.setState({ showTypes: false })
-  }
+  
+  
 
   render() {
     const { make, models, types } = this.state
@@ -73,7 +76,7 @@ class MakeModelSelect extends React.Component {
         <div id="inputs-container">
           <div className="input">
             <label htmlFor="make">Choose a brand:</label>
-            <select onChange={this.makeSelected} onClick={this.resetTypes}>
+            <select onChange={this.makeSelected}>
               <option value="" disabled selected>
                 Brands' list
               </option>
@@ -90,9 +93,10 @@ class MakeModelSelect extends React.Component {
             <select
               disabled={this.state.accessToModel}
               onChange={this.modelSelected}
+              id="model-input"
             >
               <option value="" disabled selected>
-                Models' list
+                Models' List
               </option>
               {models.map((model, i) => (
                 <option key={i} value={model.key}>
@@ -104,7 +108,7 @@ class MakeModelSelect extends React.Component {
 
           <div className={"input " + (this.state.showTypes ? "" : "hide")}>
             <label htmlFor="type">Type list:</label>
-            <select>
+            <select id="type-input">
               <option value="" disabled selected>
                 Types' list
               </option>
